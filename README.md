@@ -241,6 +241,15 @@ nav2-esp32-bridge/
 
 ## Dependencies
 
+### System (Ubuntu)
+```bash
+# C++ serial library (required for esp32_bridge_node)
+sudo apt install -y libserial-dev
+
+# ROS2 serial for Python (optional — for bridge diagnostic tools)
+pip3 install pyserial
+```
+
 ### Firmware (PlatformIO)
 - espressif32 >= 5.0.0
 - ESP32Encoder
@@ -254,6 +263,8 @@ nav2-esp32-bridge/
 - std_msgs
 - ros2_control
 - diff_drive_controller
+- robot_localization
+- slam_toolbox
 
 ---
 
