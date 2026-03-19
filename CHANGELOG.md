@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### Added
+- `encoder_ppr` and `encoder_microsteps` ROS2 runtime parameters — no recompile needed for different encoders (ADR-013)
+- `use_sim_time` parameter — clean simulation/hardware clock transition (ADR-013)
+- Runtime-configurable `wheel_radius` and `wheel_track` parameters (ADR-013)
+
 ## [1.0.0] — 2026-03-19 — Initial Release
 
 ### Added

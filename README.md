@@ -198,6 +198,29 @@ BOOT → INIT → IDLE → NORMAL → SAFETY → FAULT
 
 ---
 
+### Bridge Node Parameters (ROS2 runtime)
+
+These are loaded when the `esp32_bridge_node` starts. No recompile needed.
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `use_sim_time` | `false` | Use simulation clock (for hardware-in-loop testing) |
+| `encoder_ppr` | `400` | Encoder pulses per revolution (from spec sheet) |
+| `encoder_microsteps` | `4` | Quadrature multiplier (always 4 for AB encoding) |
+| `wheel_radius` | `0.05` | Wheel radius in metres |
+| `wheel_track` | `0.26` | Distance between wheel contact points in metres |
+| `uart_port` | `/dev/ttyUSB0` | ESP32 serial device path |
+| `uart_baud` | `115200` | UART baud rate |
+
+**Example — override encoder PPR for a 600 PPR encoder:**
+
+```bash
+ros2 launch hanatra_control esp32_bridge.launch.py \
+  encoder_ppr:=600
+```
+
+---
+
 ## Testing
 
 ```bash

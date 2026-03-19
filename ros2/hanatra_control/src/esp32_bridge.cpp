@@ -115,11 +115,26 @@ public:
           odom_x_(0.0), odom_y_(0.0), odom_yaw_(0.0)
     {
         // Declare parameters
+        this->declare_parameter<bool>("use_sim_time", false);            // AVE suggestion #2
         this->declare_parameter<std::string>("uart_port", "/dev/ttyUSB0");
         this->declare_parameter<int>("uart_baud", UART_BAUD);
         this->declare_parameter<std::string>("namespace", "hanatra");
         this->declare_parameter<float>("wheel_radius", WHEEL_RADIUS_M);
         this->declare_parameter<float>("wheel_track", WHEEL_TRACK_M);
+        this->declare_parameter<int>("encoder_ppr", 400);               // AVE suggestion #1
+        this->declare_parameter<int>("encoder_microsteps", 4);         // quadrature = 4× PPR
+
+        // Read parameters
+        use_sim_time_ = this->get_parameter("use_sim_time").as_bool();
+        encoder_ppr_ = this->get_parameter("encoder_ppr").as_int();
+        encoder_microsteps_ = this->get_parameter("encoder_microsteps").as_int();
+        wheel_radius_ = this->get_parameter("wheel_radius").as_float();
+        wheel_track_ = this->get_parameter("wheel_track").as_float();
+        // Counts per revolution = PPR × microsteps (quadrature)
+        counts_per_rev_ = static_cast<float>(encoder_ppr_ * encoder_microsteps_);
+
+        RCLCPP_INFO(this->get_logger(), "Parameters — encoder_ppr:%d microsteps:%d counts_per_rev:%.0f wheel_radius:%.3fm",
+                     encoder_ppr_, encoder_microsteps_, counts_per_rev_, wheel_radius_);
 
         std::string port = this->get_parameter("uart_port").as_string();
         int baud = this->get_parameter("uart_baud").as_int();
@@ -150,6 +165,7 @@ public:
 
 private:
     bool simulation_mode_ = false;
+    bool use_sim_time_ = false;         // use_sim_time parameter (AVE #2)
     serial::Serial serial_;
     tf2_ros::TransformBroadcaster tf_broadcaster_;
 
@@ -157,6 +173,13 @@ private:
     int32_t odom_left_counts_, odom_right_counts_;
     float odom_x_, odom_y_, odom_yaw_;
     float last_left_vel_ = 0.0f, last_right_vel_ = 0.0f;
+
+    // Runtime-configurable hardware params (AVE #1)
+    int encoder_ppr_ = 400;       // pulses per revolution (from encoder spec)
+    int encoder_microsteps_ = 4;   // quadrature multiplier (always 4)
+    float counts_per_rev_ = 1600.0f; // computed: ppr × microsteps
+    float wheel_radius_ = WHEEL_RADIUS_M;
+    float wheel_track_ = WHEEL_TRACK_M;
 
     // Publishers
     rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_pub_;
@@ -372,16 +395,16 @@ private:
         odom_left_counts_  = left_counts;
         odom_right_counts_ = right_counts;
 
-        // Update odometry
-        static const float COUNTS_PER_M = 1.0f / (WHEEL_RADIUS_M * 2.0f * M_PI * 400.0f);
+        // Update odometry using runtime-configurable params (AVE #1)
+        float counts_per_m = counts_per_rev_ / (wheel_radius_ * 2.0f * M_PI);
         int32_t dl = left_counts - last_left_vel_;
         int32_t dr = right_counts - last_right_vel_;
-        float dl_m = dl * COUNTS_PER_M;
-        float dr_m = dr * COUNTS_PER_M;
+        float dl_m = dl / counts_per_m;
+        float dr_m = dr / counts_per_m;
         float dist = (dl_m + dr_m) / 2.0f;
         odom_x_ += dist * std::cos(odom_yaw_);
         odom_y_ += dist * std::sin(odom_yaw_);
-        float dth = (dr_m - dl_m) / WHEEL_TRACK_M;
+        float dth = (dr_m - dl_m) / wheel_track_;
         odom_yaw_ += dth;
         last_left_vel_ = left_counts;
         last_right_vel_ = right_counts;
