@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 480" width="720" height="480">
+  <defs>
+    <style>
+      .room { fill: #1c2128; }
+      .grid { stroke: #21262d; stroke-width: 1; }
+      .wall { fill: #30363d; stroke: #484f58; stroke-width: 1; }
+      .desk { fill: #2d333b; stroke: #444c56; stroke-width: 1; }
+      .pillar { fill: #6e7681; stroke: #8b949e; stroke-width: 1; }
+      .waypoint { fill: none; stroke: #1f6feb66; stroke-width: 2; stroke-dasharray: 6 4; }
+      .waypoint-dot { fill: #1f6feb; }
+      .robot-body { fill: #c9d1d9; }
+      .robot-arrow { fill: #58a6ff; }
+      .robot-wheel { fill: #484f58; }
+      .lidar { stroke: #7ee78744; stroke-width: 1; fill: none; }
+      .start-label { fill: #7ee787; font-family: monospace; font-size: 10px; }
+      .goal-circle { fill: #f85149; }
+      .goal-inner { fill: #0d1117; }
+      .goal-label { fill: #f85149; font-family: monospace; font-size: 10px; }
+      .state-nominal { fill: #7ee78722; stroke: #7ee78744; stroke-width: 1; }
+      .state-label { fill: #7ee787; font-family: monospace; font-size: 8px; font-weight: bold; }
+      .header-text { fill: #c9d1d9; font-family: monospace; font-size: 11px; }
+      .sub-text { fill: #8b949e; font-family: monospace; font-size: 9px; }
+      .telemetry-bg { fill: #161b22; stroke: #30363d; stroke-width: 1; }
+      .tele-line { fill: none; }
+      .tele-ts { fill: #484f58; font-family: monospace; font-size: 8px; }
+      .tele-topic { fill: #58a6ff; font-family: monospace; font-size: 8px; }
+      .tele-val { fill: #7ee787; font-family: monospace; font-size: 8px; }
+      .tele-ok { fill: #7ee787; font-family: monospace; font-size: 8px; }
+      .tele-warn { fill: #d29922; font-family: monospace; font-size: 8px; }
+    </style>
+  </defs>
+
+  <!-- ── Title bar ─────────────────────────────────────────────────────── -->
+  <rect width="720" height="480" class="room"/>
+  <text x="15" y="20" class="header-text" font-size="13px" fill="#58a6ff">nav2-esp32-bridge — Gazebo Simulation</text>
+  <text x="15" y="34" class="sub-text">HANATRA FORTITUDE · ESP32-S3 + ROS2 Iron · Nav2 DWB Controller</text>
+  <rect x="15" y="40" width="140" height="14" rx="3" fill="#1f6feb22" stroke="#1f6feb44" stroke-width="1"/>
+  <text x="22" y="51" fill="#58a6ff" font-family="monospace" font-size="8px">ESP32-S3 · FreeRTOS · MIT</text>
+
+  <!-- ── Grid ─────────────────────────────────────────────────────────── -->
+  <g id="grid">
+    <line x1="0" y1="60" x2="480" y2="60" class="grid"/>
+    <line x1="0" y1="120" x2="480" y2="120" class="grid"/>
+    <line x1="0" y1="180" x2="480" y2="180" class="grid"/>
+    <line x1="0" y1="240" x2="480" y2="240" class="grid"/>
+    <line x1="0" y1="300" x2="480" y2="300" class="grid"/>
+    <line x1="0" y1="360" x2="480" y2="360" class="grid"/>
+    <line x1="0" y1="420" x2="480" y2="420" class="grid"/>
+    <line x1="60" y1="60" x2="60" y2="460" class="grid"/>
+    <line x1="120" y1="60" x2="120" y2="460" class="grid"/>
+    <line x1="180" y1="60" x2="180" y2="460" class="grid"/>
+    <line x1="240" y1="60" x2="240" y2="460" class="grid"/>
+    <line x1="300" y1="60" x2="300" y2="460" class="grid"/>
+    <line x1="360" y1="60" x2="360" y2="460" class="grid"/>
+    <line x1="420" y1="60" x2="420" y2="460" class="grid"/>
+  </g>
+
+  <!-- ── Walls ─────────────────────────────────────────────────────────── -->
+  <rect x="0"   y="60"  width="480" height="12" class="wall"/> <!-- top -->
+  <rect x="0"   y="448" width="480" height="12" class="wall"/> <!-- bottom -->
+  <rect x="0"   y="60"  width="12"  height="400" class="wall"/> <!-- left -->
+  <rect x="468" y="60"  width="12"  height="400" class="wall"/> <!-- right -->
+
+  <!-- ── Obstacles ────────────────────────────────────────────────────── -->
+  <rect x="200" y="100" width="100" height="50" class="desk"/> <!-- desk top -->
+  <rect x="200" y="330" width="100" height="50" class="desk"/> <!-- desk bottom -->
+  <rect x="400" y="190" width="60"  height="100" class="desk"/> <!-- shelf -->
+  <rect x="420" y="360" width="20"  height="20" class="pillar"/> <!-- pillar -->
+
+  <!-- ── Waypoint path ─────────────────────────────────────────────────── -->
+  <polyline points="80,250 180,250 300,250 380,300 450,250"
+    class="waypoint" fill="none"/>
+  <!-- Waypoint dots -->
+  <circle cx="80"  cy="250" r="3" class="waypoint-dot" opacity="0.5"/>
+  <circle cx="180" cy="250" r="3" class="waypoint-dot" opacity="0.7"/>
+  <circle cx="300" cy="250" r="3" class="waypoint-dot" opacity="0.7"/>
+  <circle cx="380" cy="300" r="3" class="waypoint-dot" opacity="0.7"/>
+  <circle cx="450" cy="250" r="4" fill="#1f6feb"/>
+
+  <!-- ── START marker ──────────────────────────────────────────────────── -->
+  <line x1="80" y1="235" x2="80" y2="225" stroke="#7ee787" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="68" y="228" class="start-label">START</text>
+
+  <!-- ── GOAL marker ───────────────────────────────────────────────────── -->
+  <circle cx="450" cy="250" r="10" class="goal-circle"/>
+  <circle cx="450" cy="250" r="5"  class="goal-inner"/>
+  <text x="438" y="238" class="goal-label">GOAL</text>
+
+  <!-- ── Robot (at waypoint 2, x=300, y=250, angle=0°) ────────────── -->
+  <g transform="translate(300,250) rotate(0)">
+    <!-- LiDAR scan cone -->
+    <path d="M 0,0 L -45,-55 A 65,65 0 0 1 45,-55 Z" class="lidar"/>
+    <!-- Chassis -->
+    <rect x="-14" y="-10" width="28" height="20" rx="3" class="robot-body"/>
+    <!-- Front arrow -->
+    <polygon points="14,0 6,-5 6,5" class="robot-arrow"/>
+    <!-- Wheels -->
+    <rect x="-16" y="-15" width="6" height="4" rx="1" class="robot-wheel"/>
+    <rect x="-16" y="11"  width="6" height="4" rx="1" class="robot-wheel"/>
+    <rect x="10"  y="-15" width="6" height="4" rx="1" class="robot-wheel"/>
+    <rect x="10"  y="11"  width="6" height="4" rx="1" class="robot-wheel"/>
+    <!-- State badge -->
+    <rect x="-22" y="-24" width="44" height="12" rx="3" class="state-nominal"/>
+    <text x="-16" y="-15" class="state-label">NOMINAL</text>
+  </g>
+
+  <!-- ── Telemetry log ─────────────────────────────────────────────────── -->
+  <rect x="495" y="60" width="215" height="400" rx="4" class="telemetry-bg"/>
+  <text x="505" y="78" fill="#c9d1d9" font-family="monospace" font-size="9px" font-weight="bold">ROS2 Topic Log</text>
+
+  <!-- Log lines -->
+  <text x="505" y="95"  class="tele-ts">[20:42:15] <ts class="tele-topic">/hanatra/cmd_vel</ts> linear=<ts class="tele-val">0.10 m/s</ts> angular=0.00</text>
+  <text x="505" y="110" class="tele-ts">[20:42:15] <ts class="tele-ok">[BOOT]</ts> ESP32 v2.0 ready</text>
+  <text x="505" y="125" class="tele-ts">[20:42:15] <ts class="tele-ok">[BOOT]</ts> Safety FSM: NOMINAL</text>
+  <text x="505" y="140" class="tele-ts">[20:42:16] <ts class="tele-ok">[ESTOP]</ts> E-Stop triggered</text>
+  <text x="505" y="155" class="tele-ts">[20:42:17] STATE:SAFETY → STATE:RECOVERY</text>
+  <text x="505" y="170" class="tele-ts">[20:42:18] STATE:RECOVERY → STATE:NOMINAL</text>
+  <text x="505" y="185" class="tele-ts">[20:42:19] <ts class="tele-topic">/hanatra/imu/data</ts> yaw_rate=<ts class="tele-val">0.52 rad/s</ts></text>
+  <text x="505" y="200" class="tele-ts">[20:42:20] <ts class="tele-topic">/hanatra/battery</ts> voltage=<ts class="tele-val">24.2V</ts> soc=<ts class="tele-val">94%</ts></text>
+  <text x="505" y="215" class="tele-ts">[20:42:21] <ts class="tele-topic">/hanatra/odom</ts> x=<ts class="tele-val">0.48m</ts> y=<ts class="tele-val">0.01m</ts> θ=<ts class="tele-val">0.02rad</ts></text>
+  <text x="505" y="230" class="tele-ts">[20:42:22] <ts class="tele-topic">/hanatra/motor_status</ts> L=<ts class="tele-val">38.2rpm</ts> R=<ts class="tele-val">38.1rpm</ts></text>
+  <text x="505" y="245" class="tele-ts">[20:42:23] <ts class="tele-topic">/hanatra/robot_state</ts> state=<ts class="tele-ok">NOMINAL</ts></text>
+  <text x="505" y="260" class="tele-ts">[20:42:24] Nav2 DWB: trajectory=<ts class="tele-val">optimal</ts></text>
+  <text x="505" y="275" class="tele-ts">[20:42:25] Costmap: clearance=<ts class="tele-val">0.23m</ts></text>
+
+  <!-- Divider -->
+  <line x1="495" y1="285" x2="710" y2="285" stroke="#30363d" stroke-width="1"/>
+
+  <!-- Frame rates -->
+  <text x="505" y="302" fill="#c9d1d9" font-family="monospace" font-size="9px" font-weight="bold">Frame Rates</text>
+  <text x="505" y="318" class="tele-ts">cmd_vel       <ts class="tele-val">on-demand</ts></text>
+  <text x="505" y="332" class="tele-ts">/odom        <ts class="tele-val">20 Hz</ts></text>
+  <text x="505" y="346" class="tele-ts">/imu/data    <ts class="tele-val">200 Hz</ts></text>
+  <text x="505" y="360" class="tele-ts">/battery     <ts class="tele-val">1 Hz</ts></text>
+  <text x="505" y="374" class="tele-ts">/motor_status <ts class="tele-val">20 Hz</ts></text>
+  <text x="505" y="388" class="tele-ts">/robot_state  <ts class="tele-val">1 Hz</ts></text>
+  <text x="505" y="402" class="tele-ts">EKF fusion   <ts class="tele-val">50 Hz</ts></text>
+
+  <!-- Divider -->
+  <line x1="495" y1="412" x2="710" y2="412" stroke="#30363d" stroke-width="1"/>
+
+  <!-- Safety FSM -->
+  <text x="505" y="428" fill="#c9d1d9" font-family="monospace" font-size="9px" font-weight="bold">Safety FSM</text>
+  <rect x="495" y="435" width="215" height="18" rx="3" fill="#0d1117"/>
+  <text x="505" y="448" class="tele-ts"><ts class="tele-ok">NOMINAL</ts> — Watchdog OK — Estop OK</text>
+
+  <!-- ── Footer ────────────────────────────────────────────────────────── -->
+  <text x="15" y="468" class="sub-text">github.com/KHORA9/nav2-esp32-bridge · MIT Licensed</text>
+  <text x="620" y="468" class="sub-text" text-anchor="end">ESP32-S3 · TB6600 · MPU6050</text>
+</svg>

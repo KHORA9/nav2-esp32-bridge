@@ -3,6 +3,8 @@
 **The first open-source bridge between ROS2 Navigation2 and ESP32 motor controllers.**
 
 > ⚡ **Zero open-source competitors exist in this space.** (Confirmed via GitHub API — March 2026)
+
+![nav2-esp32-bridge demo](docs/demo-diagram.png)
 > Built by [HANATRA Limited](https://hanatra.com) · MIT Licensed · 2026
 
 ---
