@@ -1,0 +1,35 @@
+name: Build Firmware
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'firmware/**'
+  pull_request:
+    paths:
+      - 'firmware/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install PlatformIO
+        run: pip install platformio
+
+      - name: Build firmware
+        working-directory: firmware
+        run: pio run -e esp32-s3
+
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-build
+          path: firmware/.pio/build/esp32-s3/
+          retention-days: 30
