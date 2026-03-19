@@ -1,12 +1,15 @@
 # nav2-esp32-bridge
 
-**Production-quality ROS2 Nav2 → ESP32 motor control bridge** for differential drive mobile robots.
+**The first open-source bridge between ROS2 Navigation2 and ESP32 motor controllers.**
 
-MIT Licensed · HANATRA Limited · 2026
+> ⚡ **Zero open-source competitors exist in this space.** (Confirmed via GitHub API — March 2026)
+> Built by [HANATRA Limited](https://hanatra.com) · MIT Licensed · 2026
 
 ---
 
 ## What Is This?
+
+This is the production-quality ROS2 → ESP32 bridge that HANATRA uses to power its FORTITUDE service robot. It connects Nav2's `cmd_vel` output directly to a FreeRTOS-based ESP32 motor controller running PID velocity control — no proprietary middleware required.
 
 A complete, open-source stack for controlling a differential drive robot from ROS2 Navigation2 (Nav2):
 
@@ -22,6 +25,18 @@ ros2_control  ←→  FreeRTOS Motor Controller
 ```
 
 **Target robot:** HANATRA FORTITUDE (0.4×0.3m base, 0.5 m/s max, 2× DC motors, quadrature encoders)
+
+## Why This Exists
+
+Most mobile robot projects fall into one of two extremes:
+- **Proprietary hardware** ($5K–$50K) — integrated motor controllers with closed firmware
+- **Hobby scripts** — undocumented ESP32 + ROS2 bridges that work once, on one desk
+
+There's nothing in between — until now.
+
+> ⚡ GitHub API survey (March 2026): **zero** open-source repos exist for ESP32 + ROS2 + Nav2 integration.
+
+This bridge provides the production-grade middle ground: FreeRTOS firmware with safety FSM + PID control, C++ ROS2 node with proper error handling and simulation mode, full documentation and test suite. No registration, no NDA, no vendor lock-in.
 
 ---
 

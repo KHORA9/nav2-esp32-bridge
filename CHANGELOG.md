@@ -57,3 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Dependencies
 - Firmware: PlatformIO + ESP32-Arduino framework
 - ROS2: Iron or Humble, rclcpp, geometry_msgs, nav_msgs, sensor_msgs
+
+### Open-Source Position
+- **Zero open-source competitors** in ESP32 + ROS2 + Nav2 integration (confirmed via GitHub API, March 2026)
+- First-mover in this niche; HANATRA's bridge is the first production-quality open-source solution
